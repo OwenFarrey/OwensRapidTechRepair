@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Owen's Rapid Tech Repair - Mobile iPhone and phone repair. I come to you in Grand Rapids, Allendale, and GVSU area.">
+    <title>Owen's Rapid Tech Repair | Mobile Phone Repair</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --navy: #0a1f3f;
+            --orange: #ff6b35;
+            --light-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-muted: #6c757d;
+            --border: #dee2e6;
+            --success: #28a745;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            background: #fff;
+            line-height: 1.6;
+            padding-top: 70px;
+        }
+
+        .navbar {
+            background: var(--navy);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #fff !important;
+        }
+        .nav-link {
+            color: rgba(255,255,255,0.85) !important;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-link:hover { color: #fff !important; }
+        .navbar-toggler { border-color: rgba(255,255,255,0.5); }
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255,0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+        }
+
+        .carousel-item {
+            height: 60vh;
+            min-height: 350px;
+            background: linear-gradient(135deg, #0a1f3f, #1a3a5c);
+        }
+        .carousel-item img {
+            object-fit: cover;
+            height: 60vh;
+            min-height: 350px;
+            opacity: 0.4;
+        }
+        .carousel-caption {
+            bottom: 20%;
+            z-index: 10;
+        }
+        .carousel-caption h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+        }
+
+        .btn-cta {
+            background: var(--orange);
+            color: #fff;
+            padding: 0.75rem 1.8rem;
+            border-radius: 6px;
+            font-weight: 700;
+            transition: background 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-cta:hover { background: #e55a2b; color: #fff; }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--navy);
+        }
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .service-cards {
+            padding: 3rem 0;
+            background: var(--light-bg);
+        }
+        .service-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            height: 100%;
+            border: 2px solid transparent;
+        }
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            border-color: var(--orange);
+        }
+        .service-card.selected {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255,107,53,0.2);
+        }
+        .service-card .icon-circle {
+            width: 70px; height: 70px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem;
+        }
+        .icon-screen { background: #dbeafe; color: #2563eb; }
+        .icon-battery { background: #dcfce7; color: #16a34a; }
+        .icon-charge { background: #fef3c7; color: #d97706; }
+        .icon-camera { background: #fce7f3; color: #db2777; }
+        .icon-speaker { background: #ede9fe; color: #7c3aed; }
+        .icon-diag { background: #e0f2fe; color: #0891b2; }
+
+        .device-section { padding: 2rem 0; display: none; }
+        .device-section.active { display: block; }
+        .mfg-tabs {
+            display: flex; justify-content: center; gap: 0.5rem;
+            flex-wrap: wrap; margin-bottom: 1.5rem;
+        }
+        .mfg-tab {
+            padding: 0.5rem 1.2rem; border-radius: 20px;
+            border: 1px solid var(--border); background: #fff;
+            cursor: pointer; font-weight: 600; transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .mfg-tab:hover, .mfg-tab.active {
+            background: var(--navy); color: #fff; border-color: var(--navy);
+        }
+        .device-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 0.8rem;
+        }
+        .device-btn {
+            padding: 0.6rem 0.5rem; border-radius: 8px;
+            border: 1px solid var(--border); background: #fff;
+            cursor: pointer; font-weight: 500; font-size: 0.9rem;
+            transition: all 0.2s; text-align: center;
+        }
+        .device-btn:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+        .quote-result {
+            margin-top: 1.5rem; padding: 1.5rem;
+            background: #fff; border-radius: 10px;
+            border: 2px solid var(--success); text-align: center;
+            display: none;
+        }
+        .quote-result.show { display: block; }
+        .quote-result .price {
+            font-size: 2.5rem; font-weight: 800; color: var(--success);
+        }
+
+        .back-btn {
+            background: none; border: none; color: var(--orange);
+            font-weight: 600; cursor: pointer; font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        .back-btn:hover { text-decoration: underline; }
+
+        .about-section { padding: 3rem 0; }
+        .about-section img {
+            max-width: 200px; border-radius: 50%; margin-bottom: 1rem;
+        }
+        .faq-section { padding: 3rem 0; background: var(--light-bg); }
+        .contact-section {
+            padding: 3rem 0; background: var(--navy); color: #fff;
+            text-align: center;
+        }
+        .contact-section a { color: var(--orange); text-decoration: none; font-weight: 600; }
+
+        footer {
+            background: #0d1b2a; color: rgba(255,255,255,0.7);
+            text-align: center; padding: 1.5rem; font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .carousel-caption h2 { font-size: 1.8rem; }
+            .device-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── NAVIGATION ─── -->
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">Owen's Rapid Tech Repair</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── HERO CAROUSEL ─── -->
+<div id="home" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#home" data-bs-slide-to="0" class="active"></button>
+    <button type="button" data-bs-target="#home" data-bs-slide-to="1"></button>
+    <button type="button" data-bs-target="#home" data-bs-slide-to="2"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <svg class="d-block w-100" style="height:60vh;" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100%" height="100%" fill="#0a1f3f"/>
+        <text x="50%" y="50%" text-anchor="middle" dy=".35em" fill="#ffffff" opacity="0.6" font-size="24">Your Setup Here</text>
+      </svg>
+      <div class="carousel-caption">
+        <h2>Mobile Phone Repair Wherever You Are</h2>
+        <p class="lead">I come to your home, workplace, or a public spot.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <svg class="d-block w-100" style="height:60vh;" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100%" height="100%" fill="#1a3a5c"/>
+        <text x="50%" y="50%" text-anchor="middle" dy=".35em" fill="#ffffff" opacity="0.6" font-size="24">Tools &amp; Setup</text>
+      </svg>
+      <div class="carousel-caption">
+        <h2>Premium Parts, Fast Turnaround</h2>
+        <p class="lead">Most repairs done in 30 minutes, same-day appointments available.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <svg class="d-block w-100" style="height:60vh;" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100%" height="100%" fill="#2a4a6c"/>
+        <text x="50%" y="50%" text-anchor="middle" dy=".35em" fill="#ffffff" opacity="0.6" font-size="24">Before / After</text>
+      </svg>
+      <div class="carousel-caption">
+        <h2>Quality Work at Fair Prices</h2>
+        <p class="lead">No storefront, no overhead. Just honest repair.</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#home" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#home" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
+
+<!-- ─── SERVICE SECTION ─── -->
+<section class="service-cards" id="services">
+    <div class="container">
+        <h2 class="section-title">What Do You Need Fixed?</h2>
+        <p class="section-subtitle">Click a repair type to see pricing for your device.</p>
+        <div class="row g-4" id="serviceCardsRow">
+            <div class="col-md-4 col-lg-2">
+                <div class="service-card" onclick="selectRepairType('Screen')" id="cardScreen">
+                    <div class="icon-circle icon-screen"><i class="bi bi-phone"></i></div>
+                    <h3>Screen Repair</h3>
+                    <p>Cracked glass, dead pixels, no touch response.</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="service-card" onclick="selectRepairType('Battery')" id="cardBattery">
+                    <div class="icon-circle icon-battery"><i class="bi bi-battery-charging"></i></div>
+                    <h3>Battery</h3>
+                    <p>Won't hold charge, dies fast, needs replacement.</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="service-card" onclick="selectRepairType('Charge Port')" id="cardChargePort">
+                    <div class="icon-circle icon-charge"><i class="bi bi-plug"></i></div>
+                    <h3>Charge Port</h3>
+                    <p>Loose connection, won't charge, bent pins.</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="service-card" onclick="selectRepairType('Camera')" id="cardCamera">
+                    <div class="icon-circle icon-camera"><i class="bi bi-camera"></i></div>
+                    <h3>Camera</h3>
+                    <p>Blurry photos, cracked lens, black screen.</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="service-card" onclick="selectRepairType('Speaker')" id="cardSpeaker">
+                    <div class="icon-circle icon-speaker"><i class="bi bi-volume-up"></i></div>
+                    <h3>Speaker</h3>
+                    <p>No sound, muffled audio, earpiece broken.</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="service-card" onclick="selectRepairType('Diagnostic')" id="cardDiagnostic">
+                    <div class="icon-circle icon-diag"><i class="bi bi-search"></i></div>
+                    <h3>Diagnostic</h3>
+                    <p>Not sure what's wrong? I'll figure it out.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="device-section" id="deviceSection">
+            <hr class="my-4">
+            <button class="back-btn" onclick="resetToServices()"><i class="bi bi-arrow-left"></i> Choose a different repair</button>
+            <h3 class="text-center mb-1" id="deviceSectionTitle">Select Your Device</h3>
+            <p class="section-subtitle" id="deviceSectionSubtitle"></p>
+            <div class="mfg-tabs" id="mfgTabs">
+                <button class="mfg-tab active" onclick="filterDevices('all')">All</button>
+                <button class="mfg-tab" onclick="filterDevices('Apple')">Apple iPhone</button>
+                <button class="mfg-tab" onclick="filterDevices('Samsung')">Samsung Galaxy</button>
+                <button class="mfg-tab" onclick="filterDevices('Google')">Google Pixel</button>
+            </div>
+            <div class="device-grid" id="deviceGrid"></div>
+            <div class="quote-result" id="quoteResult">
+                <h4 id="quoteDeviceName"></h4>
+                <p class="detail" id="quoteRepairType"></p>
+                <div class="price" id="quotePrice"></div>
+                <p class="mt-2">Price includes parts and labor. Most repairs done in 30 minutes.</p>
+                <a class="btn-cta" id="quoteBookBtn" href="sms:+16165503211">
+                    <i class="bi bi-chat-dots"></i> Text to Book This Repair
+                </a>
+                <p class="small text-muted mt-2">Or call <strong>(616) 550-3211</strong></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section class="about-section" id="about">
+    <div class="container text-center">
+        <h2 class="section-title">About Me</h2>
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.35em' font-size='18' fill='%23888' font-family='sans-serif'%3EYour Photo%3C/text%3E%3C/svg%3E" alt="Owen - placeholder">
+        <p class="lead">Hi, I'm Owen. I'm an IT student at <strong>Grand Valley State University</strong>.</p>
+        <p>I started Owen's Rapid Tech Repair for one reason: phone repair should be affordable and convenient. I use brand new parts, I come to your location, and I charge less because I don't have a storefront to pay for.</p>
+        <p><strong>Service area:</strong> Grand Rapids, Allendale, GVSU campus, Walker, Standale, Grandville, and within a 20-minute drive.</p>
+    </div>
+</section>
+
+<!-- ─── FAQ ─── -->
+<section class="faq-section" id="faq">
+    <div class="container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="accordion accordion-flush mt-4" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">How does the service work?</button></h2>
+                <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">You text or call me with your device model and the issue. I order a premium replacement part just for you (usually arrives next day). Then I meet you at your home, workplace, or a public spot and fix your device on the spot.</div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">What kind of parts do you use?</button></h2>
+                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">I use premium refurbished screens – original Apple displays with new glass. They look and feel identical to the original. I do not use cheap aftermarket LCDs.</div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">Do I need to back up my phone?</button></h2>
+                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">Yes, please back up to iCloud or your computer before the repair. I respect your privacy and never ask for your passcode.</div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">How far do you travel?</button></h2>
+                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">Standard service area is a 20-minute drive from my location, covering Grand Rapids, Allendale, GVSU, Walker, Standale, Grandville, and nearby. Farther? Just ask.</div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">Is there a warranty?</button></h2>
+                <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">Yes, I offer a 90-day warranty on all parts. If your replacement screen or battery develops a defect within 90 days, I'll replace it at no cost.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section class="contact-section" id="contact">
+    <div class="container">
+        <h2>Ready to Fix That Phone?</h2>
+        <p class="lead mb-3">Text or call me directly. I answer fast.</p>
+        <p style="font-size: 1.4rem; font-weight: 700;">
+            <a href="tel:+16165503211">(616) 550-3211</a>
+        </p>
+        <p class="mt-3">Available 24/7 seven days a week</p>
+        <p class="small mt-2">Service area: Grand Rapids, Allendale, GVSU, Walker, Standale, Grandville & nearby</p>
+    </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+    <div class="container">
+        <p>&copy; 2026 Owen's Rapid Tech Repair. All rights reserved.</p>
+        <p>Proudly serving the Grand Rapids community.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const priceData = {
+        'Screen': {
+            label: 'Screen Replacement',
+            desc: 'Premium refurbished screen – original Apple display with new glass.',
+            devices: {
+                'Apple': [
+                    { model: 'iPhone XR', price: 69 }, { model: 'iPhone 11', price: 75 }, { model: 'iPhone 11 Pro', price: 85 },
+                    { model: 'iPhone 11 Pro Max', price: 99 }, { model: 'iPhone 12', price: 79 }, { model: 'iPhone 12 Pro', price: 89 },
+                    { model: 'iPhone 12 Pro Max', price: 109 }, { model: 'iPhone 13', price: 85 }, { model: 'iPhone 13 Pro', price: 79 },
+                    { model: 'iPhone 13 Pro Max', price: 119 }, { model: 'iPhone 14', price: 109 }, { model: 'iPhone 14 Plus', price: 129 },
+                    { model: 'iPhone 14 Pro', price: 149 }, { model: 'iPhone 14 Pro Max', price: 189 }, { model: 'iPhone 15', price: 139 },
+                    { model: 'iPhone 15 Plus', price: 159 }, { model: 'iPhone 15 Pro', price: 179 }, { model: 'iPhone 15 Pro Max', price: 219 },
+                    { model: 'iPhone SE (2nd Gen)', price: 59 }, { model: 'iPhone SE (3rd Gen)', price: 65 }
+                ],
+                'Samsung': [
+                    { model: 'Galaxy S20', price: 99 }, { model: 'Galaxy S20+', price: 119 }, { model: 'Galaxy S20 Ultra', price: 149 },
+                    { model: 'Galaxy S21', price: 119 }, { model: 'Galaxy S21+', price: 139 }, { model: 'Galaxy S21 Ultra', price: 169 },
+                    { model: 'Galaxy S22', price: 139 }, { model: 'Galaxy S22+', price: 159 }, { model: 'Galaxy S22 Ultra', price: 189 },
+                    { model: 'Galaxy S23', price: 159 }, { model: 'Galaxy S23+', price: 179 }, { model: 'Galaxy S23 Ultra', price: 209 },
+                    { model: 'Galaxy S24', price: 179 }, { model: 'Galaxy S24+', price: 199 }, { model: 'Galaxy S24 Ultra', price: 239 }
+                ],
+                'Google': [
+                    { model: 'Pixel 6', price: 99 }, { model: 'Pixel 6 Pro', price: 129 }, { model: 'Pixel 6a', price: 79 },
+                    { model: 'Pixel 7', price: 119 }, { model: 'Pixel 7 Pro', price: 149 }, { model: 'Pixel 7a', price: 89 },
+                    { model: 'Pixel 8', price: 139 }, { model: 'Pixel 8 Pro', price: 169 }, { model: 'Pixel 8a', price: 109 }
+                ]
+            }
+        },
+        'Battery': {
+            label: 'Battery Replacement',
+            desc: 'Brand new battery – no more tethering to a charger.',
+            devices: {
+                'Apple': [
+                    { model: 'iPhone XR', price: 39 }, { model: 'iPhone 11', price: 39 }, { model: 'iPhone 11 Pro', price: 45 },
+                    { model: 'iPhone 11 Pro Max', price: 49 }, { model: 'iPhone 12', price: 45 }, { model: 'iPhone 12 Pro', price: 45 },
+                    { model: 'iPhone 12 Pro Max', price: 49 }, { model: 'iPhone 13', price: 45 }, { model: 'iPhone 13 Pro', price: 49 },
+                    { model: 'iPhone 13 Pro Max', price: 55 }, { model: 'iPhone 14', price: 49 }, { model: 'iPhone 14 Plus', price: 55 },
+                    { model: 'iPhone 14 Pro', price: 59 }, { model: 'iPhone 14 Pro Max', price: 69 }, { model: 'iPhone 15', price: 59 },
+                    { model: 'iPhone 15 Plus', price: 65 }, { model: 'iPhone 15 Pro', price: 69 }, { model: 'iPhone 15 Pro Max', price: 79 },
+                    { model: 'iPhone SE (2nd Gen)', price: 35 }, { model: 'iPhone SE (3rd Gen)', price: 35 }
+                ],
+                'Samsung': [
+                    { model: 'Galaxy S20', price: 49 }, { model: 'Galaxy S20+', price: 55 }, { model: 'Galaxy S20 Ultra', price: 65 },
+                    { model: 'Galaxy S21', price: 55 }, { model: 'Galaxy S21+', price: 59 }, { model: 'Galaxy S21 Ultra', price: 69 },
+                    { model: 'Galaxy S22', price: 59 }, { model: 'Galaxy S22+', price: 65 }, { model: 'Galaxy S22 Ultra', price: 75 },
+                    { model: 'Galaxy S23', price: 65 }, { model: 'Galaxy S23+', price: 69 }, { model: 'Galaxy S23 Ultra', price: 79 },
+                    { model: 'Galaxy S24', price: 69 }, { model: 'Galaxy S24+', price: 75 }, { model: 'Galaxy S24 Ultra', price: 89 }
+                ],
+                'Google': [
+                    { model: 'Pixel 6', price: 49 }, { model: 'Pixel 6 Pro', price: 59 }, { model: 'Pixel 6a', price: 45 },
+                    { model: 'Pixel 7', price: 55 }, { model: 'Pixel 7 Pro', price: 59 }, { model: 'Pixel 7a', price: 49 },
+                    { model: 'Pixel 8', price: 59 }, { model: 'Pixel 8 Pro', price: 69 }, { model: 'Pixel 8a', price: 55 }
+                ]
+            }
+        },
+        'Charge Port': {
+            label: 'Charge Port Repair',
+            desc: 'Loose or broken charge port – we replace or recondition it.',
+            devices: {
+                'Apple': [
+                    { model: 'iPhone XR', price: 49 }, { model: 'iPhone 11', price: 49 }, { model: 'iPhone 11 Pro', price: 55 },
+                    { model: 'iPhone 11 Pro Max', price: 59 }, { model: 'iPhone 12', price: 55 }, { model: 'iPhone 12 Pro', price: 55 },
+                    { model: 'iPhone 12 Pro Max', price: 65 }, { model: 'iPhone 13', price: 55 }, { model: 'iPhone 13 Pro', price: 59 },
+                    { model: 'iPhone 13 Pro Max', price: 69 }, { model: 'iPhone 14', price: 65 }, { model: 'iPhone 14 Plus', price: 75 },
+                    { model: 'iPhone 14 Pro', price: 79 }, { model: 'iPhone 14 Pro Max', price: 89 }, { model: 'iPhone 15', price: 75 },
+                    { model: 'iPhone 15 Plus', price: 85 }, { model: 'iPhone 15 Pro', price: 89 }, { model: 'iPhone 15 Pro Max', price: 99 },
+                    { model: 'iPhone SE (2nd Gen)', price: 45 }, { model: 'iPhone SE (3rd Gen)', price: 45 }
+                ],
+                'Samsung': [
+                    { model: 'Galaxy S20', price: 55 }, { model: 'Galaxy S20+', price: 59 }, { model: 'Galaxy S20 Ultra', price: 69 },
+                    { model: 'Galaxy S21', price: 55 }, { model: 'Galaxy S21+', price: 59 }, { model: 'Galaxy S21 Ultra', price: 69 },
+                    { model: 'Galaxy S22', price: 59 }, { model: 'Galaxy S22+', price: 65 }, { model: 'Galaxy S22 Ultra', price: 75 },
+                    { model: 'Galaxy S23', price: 65 }, { model: 'Galaxy S23+', price: 69 }, { model: 'Galaxy S23 Ultra', price: 79 },
+                    { model: 'Galaxy S24', price: 69 }, { model: 'Galaxy S24+', price: 75 }, { model: 'Galaxy S24 Ultra', price: 89 }
+                ],
+                'Google': [
+                    { model: 'Pixel 6', price: 49 }, { model: 'Pixel 6 Pro', price: 59 }, { model: 'Pixel 6a', price: 45 },
+                    { model: 'Pixel 7', price: 55 }, { model: 'Pixel 7 Pro', price: 59 }, { model: 'Pixel 7a', price: 49 },
+                    { model: 'Pixel 8', price: 59 }, { model: 'Pixel 8 Pro', price: 69 }, { model: 'Pixel 8a', price: 55 }
+                ]
+            }
+        },
+        'Camera': {
+            label: 'Camera Repair',
+            desc: 'Cracked lens, blurry photos, or black camera screen – we fix it.',
+            devices: {
+                'Apple': [
+                    { model: 'iPhone XR', price: 59 }, { model: 'iPhone 11', price: 65 }, { model: 'iPhone 11 Pro', price: 79 },
+                    { model: 'iPhone 11 Pro Max', price: 89 }, { model: 'iPhone 12', price: 75 }, { model: 'iPhone 12 Pro', price: 89 },
+                    { model: 'iPhone 12 Pro Max', price: 109 }, { model: 'iPhone 13', price: 79 }, { model: 'iPhone 13 Pro', price: 99 },
+                    { model: 'iPhone 13 Pro Max', price: 119 }, { model: 'iPhone 14', price: 99 }, { model: 'iPhone 14 Plus', price: 119 },
+                    { model: 'iPhone 14 Pro', price: 129 }, { model: 'iPhone 14 Pro Max', price: 149 }, { model: 'iPhone 15', price: 119 },
+                    { model: 'iPhone 15 Plus', price: 139 }, { model: 'iPhone 15 Pro', price: 149 }, { model: 'iPhone 15 Pro Max', price: 179 },
+                    { model: 'iPhone SE (2nd Gen)', price: 55 }, { model: 'iPhone SE (3rd Gen)', price: 55 }
+                ],
+                'Samsung': [
+                    { model: 'Galaxy S20', price: 79 }, { model: 'Galaxy S20+', price: 89 }, { model: 'Galaxy S20 Ultra', price: 109 },
+                    { model: 'Galaxy S21', price: 79 }, { model: 'Galaxy S21+', price: 89 }, { model: 'Galaxy S21 Ultra', price: 109 },
+                    { model: 'Galaxy S22', price: 89 }, { model: 'Galaxy S22+', price: 99 }, { model: 'Galaxy S22 Ultra', price: 129 },
+                    { model: 'Galaxy S23', price: 109 }, { model: 'Galaxy S23+', price: 119 }, { model: 'Galaxy S23 Ultra', price: 149 },
+                    { model: 'Galaxy S24', price: 119 }, { model: 'Galaxy S24+', price: 129 }, { model: 'Galaxy S24 Ultra', price: 159 }
+                ],
+                'Google': [
+                    { model: 'Pixel 6', price: 69 }, { model: 'Pixel 6 Pro', price: 79 }, { model: 'Pixel 6a', price: 59 },
+                    { model: 'Pixel 7', price: 79 }, { model: 'Pixel 7 Pro', price: 99 }, { model: 'Pixel 7a', price: 69 },
+                    { model: 'Pixel 8', price: 89 }, { model: 'Pixel 8 Pro', price: 109 }, { model: 'Pixel 8a', price: 79 }
+                ]
+            }
+        },
+        'Speaker': {
+            label: 'Speaker Repair',
+            desc: 'No sound, muffled audio, or earpiece not working – we replace the speaker.',
+            devices: {
+                'Apple': [
+                    { model: 'iPhone XR', price: 45 }, { model: 'iPhone 11', price: 45 }, { model: 'iPhone 11 Pro', price: 49 },
+                    { model: 'iPhone 11 Pro Max', price: 55 }, { model: 'iPhone 12', price: 49 }, { model: 'iPhone 12 Pro', price: 49 },
+                    { model: 'iPhone 12 Pro Max', price: 59 }, { model: 'iPhone 13', price: 49 }, { model: 'iPhone 13 Pro', price: 55 },
+                    { model: 'iPhone 13 Pro Max', price: 65 }, { model: 'iPhone 14', price: 55 }, { model: 'iPhone 14 Plus', price: 65 },
+                    { model: 'iPhone 14 Pro', price: 69 }, { model: 'iPhone 14 Pro Max', price: 79 }, { model: 'iPhone 15', price: 65 },
+                    { model: 'iPhone 15 Plus', price: 75 }, { model: 'iPhone 15 Pro', price: 79 }, { model: 'iPhone 15 Pro Max', price: 89 },
+                    { model: 'iPhone SE (2nd Gen)', price: 39 }, { model: 'iPhone SE (3rd Gen)', price: 39 }
+                ],
+                'Samsung': [
+                    { model: 'Galaxy S20', price: 49 }, { model: 'Galaxy S20+', price: 55 }, { model: 'Galaxy S20 Ultra', price: 65 },
+                    { model: 'Galaxy S21', price: 49 }, { model: 'Galaxy S21+', price: 55 }, { model: 'Galaxy S21 Ultra', price: 65 },
+                    { model: 'Galaxy S22', price: 55 }, { model: 'Galaxy S22+', price: 59 }, { model: 'Galaxy S22 Ultra', price: 69 },
+                    { model: 'Galaxy S23', price: 59 }, { model: 'Galaxy S23+', price: 65 }, { model: 'Galaxy S23 Ultra', price: 75 },
+                    { model: 'Galaxy S24', price: 65 }, { model: 'Galaxy S24+', price: 69 }, { model: 'Galaxy S24 Ultra', price: 79 }
+                ],
+                'Google': [
+                    { model: 'Pixel 6', price: 45 }, { model: 'Pixel 6 Pro', price: 55 }, { model: 'Pixel 6a', price: 39 },
+                    { model: 'Pixel 7', price: 49 }, { model: 'Pixel 7 Pro', price: 55 }, { model: 'Pixel 7a', price: 45 },
+                    { model: 'Pixel 8', price: 55 }, { model: 'Pixel 8 Pro', price: 65 }, { model: 'Pixel 8a', price: 49 }
+                ]
+            }
+        },
+        'Diagnostic': {
+            label: 'Diagnostic Service',
+            desc: 'Not sure what\'s wrong? I\'ll diagnose the issue and give you a fair quote.',
+            devices: {
+                'Apple': [
+                    { model: 'iPhone XR', price: 19 }, { model: 'iPhone 11', price: 19 }, { model: 'iPhone 11 Pro', price: 19 },
+                    { model: 'iPhone 11 Pro Max', price: 19 }, { model: 'iPhone 12', price: 19 }, { model: 'iPhone 12 Pro', price: 19 },
+                    { model: 'iPhone 12 Pro Max', price: 19 }, { model: 'iPhone 13', price: 19 }, { model: 'iPhone 13 Pro', price: 19 },
+                    { model: 'iPhone 13 Pro Max', price: 19 }, { model: 'iPhone 14', price: 19 }, { model: 'iPhone 14 Plus', price: 19 },
+                    { model: 'iPhone 14 Pro', price: 29 }, { model: 'iPhone 14 Pro Max', price: 29 }, { model: 'iPhone 15', price: 29 },
+                    { model: 'iPhone 15 Plus', price: 29 }, { model: 'iPhone 15 Pro', price: 29 }, { model: 'iPhone 15 Pro Max', price: 29 },
+                    { model: 'iPhone SE (2nd Gen)', price: 19 }, { model: 'iPhone SE (3rd Gen)', price: 19 }
+                ],
+                'Samsung': [
+                    { model: 'Galaxy S20', price: 19 }, { model: 'Galaxy S20+', price: 19 }, { model: 'Galaxy S20 Ultra', price: 29 },
+                    { model: 'Galaxy S21', price: 19 }, { model: 'Galaxy S21+', price: 19 }, { model: 'Galaxy S21 Ultra', price: 29 },
+                    { model: 'Galaxy S22', price: 19 }, { model: 'Galaxy S22+', price: 19 }, { model: 'Galaxy S22 Ultra', price: 29 },
+                    { model: 'Galaxy S23', price: 29 }, { model: 'Galaxy S23+', price: 29 }, { model: 'Galaxy S23 Ultra', price: 29 },
+                    { model: 'Galaxy S24', price: 29 }, { model: 'Galaxy S24+', price: 29 }, { model: 'Galaxy S24 Ultra', price: 29 }
+                ],
+                'Google': [
+                    { model: 'Pixel 6', price: 19 }, { model: 'Pixel 6 Pro', price: 19 }, { model: 'Pixel 6a', price: 19 },
+                    { model: 'Pixel 7', price: 19 }, { model: 'Pixel 7 Pro', price: 29 }, { model: 'Pixel 7a', price: 19 },
+                    { model: 'Pixel 8', price: 29 }, { model: 'Pixel 8 Pro', price: 29 }, { model: 'Pixel 8a', price: 19 }
+                ]
+            }
+        }
+    };
+
+    let currentRepairType = null;
+    let currentMfgFilter = 'all';
+
+    function selectRepairType(type) {
+        currentRepairType = type;
+        currentMfgFilter = 'all';
+        document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+        const cardEl = document.getElementById('card' + type.replace(' ', ''));
+        if (cardEl) cardEl.classList.add('selected');
+        const deviceSection = document.getElementById('deviceSection');
+        deviceSection.classList.add('active');
+        document.getElementById('deviceSectionTitle').textContent = 'Select Your Device';
+        document.getElementById('deviceSectionSubtitle').textContent = priceData[type].label + ' - ' + priceData[type].desc;
+        document.querySelectorAll('#mfgTabs .mfg-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+        document.getElementById('quoteResult').classList.remove('show');
+        renderDeviceGrid();
+        deviceSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function filterDevices(mfg) {
+        currentMfgFilter = mfg;
+        document.querySelectorAll('#mfgTabs .mfg-tab').forEach(t => {
+            t.classList.toggle('active', t.textContent.trim().toLowerCase().includes(mfg.toLowerCase()) || (mfg === 'all' && t.textContent.trim() === 'All'));
+        });
+        renderDeviceGrid();
+        document.getElementById('quoteResult').classList.remove('show');
+    }
+
+    function renderDeviceGrid() {
+        const grid = document.getElementById('deviceGrid');
+        grid.innerHTML = '';
+        if (!currentRepairType || !priceData[currentRepairType]) return;
+        const allDevices = priceData[currentRepairType].devices;
+        let devicesToShow = [];
+        if (currentMfgFilter === 'all') {
+            for (const [mfg, devs] of Object.entries(allDevices)) {
+                devs.forEach(d => devicesToShow.push({ ...d, mfg }));
+            }
+        } else {
+            const devs = allDevices[currentMfgFilter] || [];
+            devs.forEach(d => devicesToShow.push({ ...d, mfg: currentMfgFilter }));
+        }
+        devicesToShow.forEach(d => {
+            const btn = document.createElement('button');
+            btn.className = 'device-btn';
+            btn.textContent = d.model;
+            btn.onclick = () => showQuote(d);
+            grid.appendChild(btn);
+        });
+        if (devicesToShow.length === 0) {
+            grid.innerHTML = '<p class="text-center text-muted">No devices available for this category yet. Please call for a quote.</p>';
+        }
+    }
+
+    function showQuote(device) {
+        const result = document.getElementById('quoteResult');
+        document.getElementById('quoteDeviceName').textContent = device.model;
+        document.getElementById('quoteRepairType').textContent = priceData[currentRepairType].label;
+        document.getElementById('quotePrice').textContent = '$' + device.price;
+        document.getElementById('quoteBookBtn').href = 'sms:+16165503211?body=Hi%20Owen!%20I%20need%20a%20' + encodeURIComponent(priceData[currentRepairType].label) + '%20for%20my%20' + encodeURIComponent(device.model) + '.%20Is%20that%20still%20%24' + device.price + '%3F';
+        result.classList.add('show');
+        result.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetToServices() {
+        document.getElementById('deviceSection').classList.remove('active');
+        document.getElementById('quoteResult').classList.remove('show');
+        document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+        currentRepairType = null;
+        document.getElementById('services').scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
