@@ -876,3 +876,59 @@ footer p:last-child {
     background: var(--btn-hover-bg);
     color: var(--btn-hover-text);
 }
+
+
+.repair-option-card {
+    flex-wrap: nowrap;
+}
+
+.repair-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-sm-cta {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+
+/* ── Social Icons ── */
+.footer-social {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.footer-social a {
+    color: rgba(255,255,255,0.8);
+    font-size: 1.8rem;
+    transition: color 0.3s, transform 0.2s;
+}
+
+.footer-social a:hover {
+    color: var(--gold-accent);
+    transform: scale(1.1);
+}
+
+.contact-social {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.contact-social .social-icon {
+    color: rgba(255,255,255,0.9);
+    font-size: 2.2rem;
+    transition: color 0.3s, transform 0.2s;
+}
+
+.contact-social .social-icon:hover {
+    color: var(--gold-accent);
+    transform: scale(1.1);
+}
