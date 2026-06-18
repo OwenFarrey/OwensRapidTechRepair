@@ -10,7 +10,7 @@ window.addEventListener('load', function() {
                 splash.style.display = 'none';
             });
         }
-    }, 1500);
+    }, 1300);
 });
 
 // ── PARTICLE BACKGROUND ──
@@ -785,7 +785,6 @@ function showRepairOptions(deviceName) {
         const div = document.createElement('div');
         div.className = 'repair-option-card';
         
-        // ✅ Show both specific description (if any) + "Parts & labor included"
         const descriptionHtml = repair.description 
             ? `<small class="text-muted">${repair.description} · Parts & labor included</small>`
             : `<small class="text-muted">Parts & labor included</small>`;
@@ -797,16 +796,27 @@ function showRepairOptions(deviceName) {
             priceHtml = `$${range[0]} – $${range[1]}`;
         }
         
+        const deviceNameEncoded = encodeURIComponent(device.name);
+        const repairLabelEncoded = encodeURIComponent(repair.label);
+        const emailSubject = encodeURIComponent(`Repair Quote Request: ${device.name} - ${repair.label}`);
+        const emailBody = encodeURIComponent(`Hi Owen,\n\nI need a ${repair.label} for my ${device.name}. Can you give me an exact quote?\n\nThanks!`);
+        
         div.innerHTML = `
             <div class="repair-left">
                 <div class="repair-name"><i class="bi ${repair.icon} me-2"></i>${repair.label}</div>
                 ${descriptionHtml}
             </div>
-            <div class="repair-right">
-                <div class="repair-price">${priceHtml}</div>
-                <a class="btn-sm-cta" href="sms:+16165503211?body=Hi%20Owen!%20I%20need%20a%20${encodeURIComponent(repair.label)}%20for%20my%20${encodeURIComponent(device.name)}.%20Can%20you%20give%20me%20an%20exact%20quote%3F">
-                    <i class="bi bi-chat-dots"></i> Text to Book This Repair
-                </a>
+				<div class="repair-actions">
+					<a class="btn-sm-cta" href="sms:+16165503211?body=Hi%20Owen!%20I%20need%20a%20${repairLabelEncoded}%20for%20my%20${deviceNameEncoded}.%20Can%20you%20give%20me%20an%20exact%20quote%3F">
+						<i class="bi bi-chat-dots"></i> Text
+					</a>
+					<a class="btn-sm-cta btn-email" href="https://mail.google.com/mail/u/0/?view=cm&fs=1&to=owensrapidtechrepair@gmail.com&su=${emailSubject}&body=${emailBody}" target="_blank" rel="noopener">
+						<i class="bi bi-envelope"></i> Email
+					</a>
+					<a class="btn-sm-cta btn-book" href="" onclick="Calendly.initPopupWidget({url:'https://calendly.com/owensrapidtechrepair/phone-repair-1-hour-appointment?month=2026-06'});return false;">
+						<i class="bi bi-calendar-check"></i> Book
+					</a>
+				</div>
             </div>
         `;
         container.appendChild(div);
@@ -816,6 +826,10 @@ function showRepairOptions(deviceName) {
     const customDiv = document.createElement('div');
     customDiv.className = 'repair-option-card';
     customDiv.style.borderColor = 'var(--gold-accent)';
+    
+    const customSubject = encodeURIComponent('Custom Repair Quote Request');
+    const customBody = encodeURIComponent(`Hi Owen,\n\nI need a repair for my device. Here's what's wrong:\n\n[Please describe the issue]\n\nThanks!`);
+    
     customDiv.innerHTML = `
         <div class="repair-left">
             <div class="repair-name"><i class="bi bi-patch-question me-2"></i>Custom Quote</div>
@@ -823,9 +837,10 @@ function showRepairOptions(deviceName) {
         </div>
         <div class="repair-right">
             <div class="repair-price" style="color: var(--gold-accent);">Ask Me</div>
-            <a class="btn-sm-cta" style="background: var(--gold-accent); color: var(--deep-navy);" href="sms:+16165503211?body=Hi%20Owen!%20I%20need%20a%20repair%20for%20my%20${encodeURIComponent(device.name)}.%20Here's%20what's%20wrong:%20">
-                <i class="bi bi-chat-dots"></i> Request Quote
-            </a>
+			<div class="repair-actions">
+				<a class="btn-sm-cta" style="background: var(--gold-accent); color: var(--deep-navy);" href="sms:...">Text</a>
+				<a class="btn-sm-cta btn-email" style="background: var(--gold-accent); color: var(--deep-navy);" href="mailto:...">Email</a>
+			</div>
         </div>
     `;
     container.appendChild(customDiv);
@@ -931,3 +946,10 @@ document.querySelectorAll('.brand-card').forEach((card, i) => {
     gifs[0].classList.add('active');
     setInterval(nextGif, cycleTime);
 })();
+
+function toggleMobileMenu() {
+    const btn = document.getElementById('mobileMenuBtn');
+    const panel = document.getElementById('mobileNavPanel');
+    btn.classList.toggle('open');
+    panel.classList.toggle('open');
+}
