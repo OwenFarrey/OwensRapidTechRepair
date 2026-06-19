@@ -160,7 +160,7 @@
 				<a class="btn-cta" href="sms:+16165503211?body=Hi%20Owen!%20I%20need%20a%20repair%20for%20my%20phone.">
 					<i class="bi bi-chat-dots me-2"></i>Text Now
 				</a>
-				<a class="btn-cta" href="https://mail.google.com/mail/u/0/?view=cm&fs=1&to=owensrapidtechrepair@gmail.com&su=Custom%20Repair%20Quote%20Request&body=Hi%20Owen!%20I%20need%20a%20repair%20for%20my%20phone.%20Here's%20the%20model%20and%20issue%3A%0A%0A[Please%20describe]" target="_blank" rel="noopener">
+				<a class="btn-cta" href="mailto:owensrapidtechrepair@gmail.com?subject=Custom%20Repair%20Quote%20Request&body=Hi%20Owen!%20I%20need%20a%20repair%20for%20my%20phone.%20Here's%20the%20model%20and%20issue%3A%0A%0A[Please%20describe]" id="notListedEmailBtn">
 					<i class="bi bi-envelope me-2"></i>Email Now
 				</a>
 			</div>
@@ -286,13 +286,28 @@
 <section class="contact-section section-bg-4" id="contact">
     <div class="container text-center">
         <h2>Ready to Fix That Phone?</h2>
-        <p class="lead mb-3">Text or call me directly. I answer fast.</p>
-        <p style="font-size: 1.4rem; font-weight: 700;">
-            <a href="tel:+16165503211" class="text-white">(616) 550-3211</a>
-        </p>
-        <p class="mt-3">Available Monday–Sunday, 8am–10pm</p>
+        <p class="lead mb-4">Call, text, email, or book an appointment.</p>
 
-        <!-- Social Links -->
+        <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-4 mt-3">
+            <a href="tel:+16165503211" class="btn-cta">
+                <i class="bi bi-telephone me-2"></i>(616) 550-3211
+            </a>
+            <a href="sms:+16165503211?body=Hi%20Owen!%20I%20need%20a%20repair%20quote." class="btn-cta">
+                <i class="bi bi-chat-dots me-2"></i>Text Me
+            </a>
+            <a href="mailto:owensrapidtechrepair@gmail.com?subject=Repair%20Quote%20Request&body=Hi%20Owen!%20I%20need%20a%20repair%20quote." class="btn-cta" id="contactEmailBtn">
+                <i class="bi bi-envelope me-2"></i>Email Me
+            </a>
+            <a href="" onclick="Calendly.initPopupWidget({url:'https://calendly.com/owensrapidtechrepair/phone-repair-1-hour-appointment?month=2026-06'});return false;" class="btn-cta">
+                <i class="bi bi-calendar-check me-2"></i>Book Now
+            </a>
+        </div>
+
+        <p class="mt-4 text-white-50">Available Monday–Sunday</p>
+        <p class="mt-2 text-white-50">
+            <i class="bi bi-credit-card me-1"></i> Payment accepted: Cash & all major electronic payments
+        </p>
+
         <div class="contact-social mt-4">
             <a href="https://www.facebook.com/profile.php?id=61590790420175" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-icon">
                 <i class="bi bi-facebook"></i>
