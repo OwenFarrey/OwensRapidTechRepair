@@ -958,3 +958,68 @@ function toggleMobileMenu() {
     btn.classList.toggle('open');
     panel.classList.toggle('open');
 }
+
+
+// ── EMAIL DEVICE DETECTION ──
+// On desktop use Gmail compose URL, on mobile use mailto (opens Gmail app)
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+if (!isMobile) {
+    // Upgrade not-listed email button for desktop
+    const notListedBtn = document.getElementById('notListedEmailBtn');
+    if (notListedBtn) {
+        notListedBtn.href = '';
+        notListedBtn.onclick = function() {
+            window.open('https://mail.google.com/mail/?view=cm&fs=1&to=owensrapidtechrepair@gmail.com&su=Custom%20Repair%20Quote%20Request&body=Hi%20Owen!%20I%20need%20a%20repair%20for%20my%20phone.', '_blank');
+            return false;
+        };
+    }
+
+    // Upgrade contact section email button for desktop
+    const contactBtn = document.getElementById('contactEmailBtn');
+    if (contactBtn) {
+        contactBtn.href = '';
+        contactBtn.onclick = function() {
+            window.open('https://mail.google.com/mail/?view=cm&fs=1&to=owensrapidtechrepair@gmail.com&su=Repair%20Quote%20Request&body=Hi%20Owen!%20I%20need%20a%20repair%20quote.', '_blank');
+            return false;
+        };
+    }
+}
+
+// Upgrade repair card email buttons for desktop after they render
+const _origShowRepairOptions = showRepairOptions;
+showRepairOptions = function(deviceName) {
+    _origShowRepairOptions(deviceName);
+    if (!isMobile) {
+        setTimeout(function() {
+            document.querySelectorAll('.btn-email').forEach(function(btn) {
+                const original = btn.getAttribute('href');
+                if (original && original.includes('mail.google.com')) {
+                    return; // already upgraded
+                }
+                btn.setAttribute('data-mailto', btn.href);
+                btn.href = '';
+                btn.onclick = function() {
+                    const mailto = this.getAttribute('data-mailto');
+                    window.open(mailto, '_blank');
+                    return false;
+                };
+            });
+        }, 100);
+    } else {
+        // On mobile convert Gmail URLs to mailto
+        setTimeout(function() {
+            document.querySelectorAll('.btn-email').forEach(function(btn) {
+                const href = btn.getAttribute('href');
+                if (href && href.includes('mail.google.com')) {
+                    const url = new URL(href);
+                    const su = url.searchParams.get('su') || '';
+                    const body = url.searchParams.get('body') || '';
+                    btn.href = `mailto:owensrapidtechrepair@gmail.com?subject=${su}&body=${body}`;
+                    btn.removeAttribute('target');
+                    btn.onclick = null;
+                }
+            });
+        }, 100);
+    }
+};
