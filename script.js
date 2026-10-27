@@ -1,16 +1,3 @@
-// ── SPLASH SCREEN (Robust version) ──
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        var splash = document.getElementById('splash');
-        if (splash) {
-            splash.classList.add('fade-out');
-            splash.addEventListener('transitionend', function() {
-                splash.style.display = 'none';
-            });
-        }
-    }, 1300);
-});
-
 // ── PARTICLE BACKGROUND ──
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
